@@ -1,9 +1,10 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import DynamicForm from '../components/DynamicForm.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <DynamicForm/>
+
   </main>
 </template>

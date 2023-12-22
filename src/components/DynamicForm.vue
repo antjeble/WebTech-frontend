@@ -45,8 +45,8 @@
   const nameField = ref('')
   const durationField = ref(0)
 
-  function loadPlants() {
-    axios.get('http://localhost:8080/plants')
+  function loadPlants() {  //async await angucken
+    axios.get('/plants')
            .then(response => {
              response.data.forEach((plant: Plant) => {
                items.value.push(plant)
@@ -57,7 +57,7 @@
 
 
   function save () {
-    axios.post('http://localhost:8080/plants', {
+    axios.post('/plants', {
       name: nameField.value,
       duration: durationField.value
     })
