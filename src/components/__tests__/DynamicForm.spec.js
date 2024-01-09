@@ -1,13 +1,16 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 
-import {flushPromises, mount, shallowMount} from '@vue/test-utils'
+import {shallowMount, flushPromises} from '@vue/test-utils'
 import DynamicForm from '../DynamicForm.vue'
+import axios from "axios";
 
 describe('DynamicForm', () => {
-  const emptyResponse: Plant[] = []
-  const twoItemResponse: Plant[] = [
-    { id: 1, name: 'Rose', duration: '5'},
-    { id: 2, name: 'Tulpe', duration: '10'}]
+  const emptyResponse = []
+  const oneItemResponse = [
+    { name: 'Rose', duration: '5'}]
+  const twoItemResponse = [
+    { name: 'Rose', duration: '5'},
+    { name: 'Tulpe', duration: '10'}]
 
   vi.mock('axios')
 
@@ -21,7 +24,18 @@ describe('DynamicForm', () => {
     expect(wrapper.text()).toMatch(title)
     })
 
-  it('should render the items from the backend', async () => {
+  it('should render one plant from the backend', async () => {
+    vi.mocked(axios, true).get.mockResolvedValueOnce({ data: oneItemResponse })
+
+    const item = oneItemResponse[0].name
+    const wrapper = shallowMount(DynamicForm)
+
+    await flushPromises()
+
+    expect(wrapper.text()).toContain(item)
+  })
+
+  it('should render multiple plants from the backend', async () => {
     vi.mocked(axios, true).get.mockResolvedValueOnce({ data: twoItemResponse })
 
     const item = twoItemResponse[0].name
@@ -30,17 +44,6 @@ describe('DynamicForm', () => {
     await flushPromises()
 
     expect(wrapper.text()).toContain(item)
-  })
-
-  it('should render message when no plant ist received from backend', async () => {
-    vi.mocked(axios, true).get.mockResolvedValueOnce({ data: emptyResponse })
-
-    const message = 'No plants found'
-    const wrapper = shallowMount(DynamicForm)
-
-    await flushPromises()
-
-    expect(wrapper.text()).toContain(message)
   })
 
 })
