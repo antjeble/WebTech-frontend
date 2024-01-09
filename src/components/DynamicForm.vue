@@ -1,36 +1,40 @@
 <template>
-  <h3> {{ title }}</h3>
-  <div>
-    <input v-model="nameField" placeholder="Name">
-    <input v-model="durationField" placeholder="Dauer">
-    <button type="button" @click="save()">"Speichern"</button>
-  </div>
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th>schon gegossen?</th>
-          <th>Name</th>
-          <th>Dauer</th>
-          <th>Löschen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="plants.length === 0">
-          <td colspan="2">Noch keine Pflanzen hinzugefügt</td>
-        </tr>
-        <tr v-for="plant in plants" :key="plant.id">
-          <td><input type="checkbox"></td>
-          <td>{{plant.name}}</td>
-          <td>{{plant.duration}}</td>
-          <td><button @click="deletePlant(plant.id)">X</button></td>
-        </tr>
-        <tr>
-          <td>{{ nameField }}</td>
-          <td>{{ durationField }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="plant-container">
+    <h3> {{ title }}</h3>
+    <div class="form-container">
+      <input v-model="nameField" placeholder="Name">
+      <input v-model="durationField" placeholder="Dauer">
+      <button type="button" @click="save()">"Speichern"</button>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>schon gegossen?</th>
+            <th>Name</th>
+            <th>Dauer</th>
+            <th>Löschen</th>
+            <th>Bearbeiten</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="plants.length === 0">
+            <td colspan="2">Noch keine Pflanzen hinzugefügt</td>
+          </tr>
+          <tr v-for="plant in plants" :key="plant.id">
+            <td><input type="checkbox"></td>
+            <td>{{plant.name}}</td>
+            <td>{{plant.duration}}</td>
+            <td><button @click="deletePlant(plant.id)">X</button></td>
+
+          </tr>
+          <tr>
+            <td>{{ nameField }}</td>
+            <td>{{ durationField }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -40,8 +44,6 @@
   import axios from "axios"
   import {AxiosResponse} from "axios"
   import {defineProps} from "vue"
-  import * as process from "process";
-
 
   defineProps<{
    title: string }>()
@@ -50,7 +52,7 @@
 
   const plants: Ref<Plant[]> = ref([])
   const nameField = ref('')
-  const durationField = ref(0)
+  const durationField = ref()
 
   async function loadPlants () {
     //@ts-ignore
@@ -76,7 +78,7 @@
     console.log('Success: ', responseData)
     plants.value.push(responseData)
     nameField.value = '';
-    durationField.value = 0;
+    durationField.value= '';
   }
 
   async function deletePlant(id?: number) {
@@ -96,15 +98,17 @@
   }
 
   // Lifecycle hooks
-  onMounted(() => {
-    loadPlants()
+  onMounted(async () => {
+    await loadPlants()
   })
 </script>
 
 <style scoped>
+
 h3 {
   text-align: center;
 }
+
 table {
   margin-left: auto;
   margin-right: auto;
