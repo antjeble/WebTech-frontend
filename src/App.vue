@@ -2,20 +2,14 @@
   <header>
     <div class="app" :class="mode">
       <Header :mode="mode" @toggle="toggle"/>
-
-      <div class="wrapper">
-        <h1>Plant App</h1>
-      </div>
+      <h1>Plant App</h1>
+      <router-view />
     </div>
   </header>
-
-  <RouterView />
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router'
 import Header from "@/components/Header.vue";
-import toggle from "@/components/Toggle.vue";
 
 export default {
   name: 'app',
@@ -44,7 +38,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background-color: #F3F3F3;
-  color: #15202B;
+  color: #15202F;
   transition: background 0.5s ease-in-out;
 }
 

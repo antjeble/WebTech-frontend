@@ -51,10 +51,10 @@ export default {
   transition: 0.4s;
 }
 input:checked + .toggler{
-  background: #2196F3;
+  background: seagreen;
 }
 input:focus + .toggler{
-  box-shadow: 0 0 2px #2196F3;
+  box-shadow: 0 0 2px seagreen;
 }
 input:checked + .toggler:before {
   -webkit-transform: translateX(26px);

@@ -4,9 +4,9 @@
     <Toggle :mode="mode" @toggle="$emit('toggle')"/>
       <nav>
         <ul>
-          <li class="nav-link"><RouterLink to="/landing">Home</RouterLink></li>
-          <li class="nav-link"><RouterLink to="/">Plants</RouterLink></li>
-          <li class="nav-link"><RouterLink to="/about">About</RouterLink></li>
+          <li class="nav-link"><router-link to="/landing">Home</router-link></li>
+          <li class="nav-link"><router-link to="/">Plants</router-link></li>
+          <li class="nav-link"><router-link to="/about">About</router-link></li>
         </ul>
       </nav>
   </header>
@@ -29,7 +29,7 @@ header{
   justify-content: space-between;
   align-items: center;
   padding: 0 25px;
-  height: 60px;
+  height: 50px;
   background-color: #C3C3C3;
   transition: background 0.5s ease-in-out;
 }
@@ -43,7 +43,7 @@ header h1{
 }
 header nav{
   display: flex;
-  height: 60px;
+  height: 50px;
 }
 header nav .nav-link{
   display: flex;
