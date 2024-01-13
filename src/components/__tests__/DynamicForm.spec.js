@@ -7,10 +7,10 @@ import axios from "axios";
 describe('DynamicForm', () => {
   const emptyResponse = []
   const oneItemResponse = [
-    { name: 'Rose', duration: '5'}]
+    { name: 'Rose', duration: '5', watered: true}]
   const twoItemResponse = [
-    { name: 'Rose', duration: '5'},
-    { name: 'Tulpe', duration: '10'}]
+    { name: 'Rose', duration: '5', watered: true},
+    { name: 'Tulpe', duration: '10', watered: false}]
 
   vi.mock('axios')
 
