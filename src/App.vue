@@ -46,4 +46,10 @@ export default {
   background-color: #192734;
   color: #F3F3F3;
 }
+h1{
+  text-align: center;
+  padding: 20px;
+  font-size: 2.5rem;
+  font-weight: 500;
+}
 </style>
