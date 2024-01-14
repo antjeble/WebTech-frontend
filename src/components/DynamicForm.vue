@@ -4,7 +4,7 @@
     <div class="form-container">
       <input v-model="nameField" placeholder="Name">
       <input v-model="durationField" placeholder="Dauer">
-      <button type="button" @click="save()">"Speichern"</button>
+      <button type="button" class="btn btn-outline-secondary" @click="save()">Speichern</button>
     </div>
     <div>
       <table>
@@ -14,7 +14,6 @@
             <th>Name</th>
             <th>Dauer</th>
             <th>Löschen</th>
-            <th>Bearbeiten</th>
           </tr>
         </thead>
         <tbody>
@@ -22,11 +21,10 @@
             <td colspan="2">Noch keine Pflanzen hinzugefügt</td>
           </tr>
           <tr v-for="plant in plants" :key="plant.id">
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" v-model="plant.watered" @change="isChecked(plant)"></td>
             <td>{{plant.name}}</td>
             <td>{{plant.duration}}</td>
-            <td><button @click="deletePlant(plant.id)">X</button></td>
-
+            <td><button class="btn btn-outline-dark" @click="deletePlant(plant.id)">X</button></td>
           </tr>
           <tr>
             <td>{{ nameField }}</td>
@@ -40,15 +38,15 @@
 
 <script setup lang="ts">
   import {ref, onMounted} from "vue";
-  import { Ref } from 'vue'
-  import axios from "axios"
-  import {AxiosResponse} from "axios"
-  import {defineProps} from "vue"
+  import { Ref } from 'vue';
+  import axios from "axios";
+  import {AxiosResponse} from "axios";
+  import {defineProps} from "vue";
 
   defineProps<{
    title: string }>()
 
-  type Plant = {id: number, name: string, duration: number}
+  type Plant = {id: number, name: string, duration: number, watered: boolean}
 
   const plants: Ref<Plant[]> = ref([])
   const nameField = ref('')
@@ -66,6 +64,18 @@
   }
 
   async function save () {
+    if (!nameField.value && !durationField.value) {
+      alert('Bitte Name und Dauer angeben.');
+      return;
+    }
+    if (!nameField.value) {
+      alert('Bitte Name vor dem Speichern angeben.');
+      return;
+    }
+    if (!durationField.value) {
+      alert('Bitte Dauer vor dem Speichern angeben.');
+      return;
+    }
     //@ts-ignore
     const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL
     const endpoint = baseUrl + '/plants'
@@ -73,12 +83,17 @@
       name: nameField.value,
       duration: durationField.value
     }
-    const response: AxiosResponse = await axios.post(endpoint, data);
-    const responseData: Plant = response.data;
-    console.log('Success: ', responseData)
-    plants.value.push(responseData)
-    nameField.value = '';
-    durationField.value= '';
+    try{
+      const response: AxiosResponse = await axios.post(endpoint, data);
+      const responseData: Plant = response.data;
+      console.log('Success: ', responseData)
+      plants.value.push(responseData)
+      nameField.value = '';
+      durationField.value= '';
+    }
+    catch (error) {
+      console.error('Error saving plant:', error)
+    }
   }
 
   async function deletePlant(id?: number) {
@@ -94,6 +109,19 @@
       } catch (error) {
         console.error('Error deleting plant:', error);
       }
+    }
+  }
+
+  async function isChecked(plant: Plant) {
+    //@ts-ignore
+    const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+    const endpoint = baseUrl + '/plants/' + plant.id;
+
+    try {
+      const response: AxiosResponse = await axios.put(endpoint, plant);
+      console.log('Plant watered status updated successfully:', response.data);
+    } catch (error) {
+      console.error('Error updating plant watered status:', error);
     }
   }
 
@@ -128,9 +156,14 @@ td {
   text-align: center;
   border-bottom: 1px solid lightgrey;
 }
-
 button {
   color: green;
 }
-
+.form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
 </style>
