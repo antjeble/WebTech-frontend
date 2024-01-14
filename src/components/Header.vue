@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1> {{mode}} </h1>
+    <h6> {{mode}} mode </h6>
     <Toggle :mode="mode" @toggle="$emit('toggle')"/>
       <nav>
         <ul>
@@ -36,11 +36,6 @@ header{
 .dark header{
   background-color: #15202B;
 }
-header h1{
-  font-size: 32px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
 header nav{
   display: flex;
   height: 50px;
@@ -60,16 +55,39 @@ ul {
   padding: 0;
   overflow: hidden;
 }
-
 li {
   float: left;
 }
-
 li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.dark ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.dark li {
+  float: left;
+}
+.dark li a {
   display: block;
   color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
 }
+h6{
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.5s ease-in-out;
+  position: absolute;
+  top: 15px;
+  left: 100px;
+}
+
 </style>
